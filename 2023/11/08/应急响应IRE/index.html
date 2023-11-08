@@ -1,0 +1,257 @@
+<!DOCTYPE html><html lang="cn" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>应急响应IRE | My Blog</title><meta name="author" content="Yang"><meta name="copyright" content="Yang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="应急响应事件监测1威胁情报运营、安全监控  Windows应急进程分析一、进程查看与关闭 计算机与外部网络通信是建立在TCP或UDP协议上，并且每一次通信都具有不同端口(0~65535)如果计算机被木马后，肯定会与外部网络通信，那么此时就可以通过查看网络连接状态，找到对应的进程ID，然后关闭进程ID就可以关闭连接状态。 1234netstat -ano | find &quot;ESTABLISH">
+<meta property="og:type" content="article">
+<meta property="og:title" content="应急响应IRE">
+<meta property="og:url" content="http://yclyyds.top/2023/11/08/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94IRE/index.html">
+<meta property="og:site_name" content="My Blog">
+<meta property="og:description" content="应急响应事件监测1威胁情报运营、安全监控  Windows应急进程分析一、进程查看与关闭 计算机与外部网络通信是建立在TCP或UDP协议上，并且每一次通信都具有不同端口(0~65535)如果计算机被木马后，肯定会与外部网络通信，那么此时就可以通过查看网络连接状态，找到对应的进程ID，然后关闭进程ID就可以关闭连接状态。 1234netstat -ano | find &quot;ESTABLISH">
+<meta property="og:locale">
+<meta property="og:image" content="http://yclyyds.top/img/four.png">
+<meta property="article:published_time" content="2023-11-08T01:46:15.913Z">
+<meta property="article:modified_time" content="2023-11-08T07:55:01.951Z">
+<meta property="article:author" content="Yang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yclyyds.top/img/four.png"><link rel="shortcut icon" href="/img/four.png"><link rel="canonical" href="http://yclyyds.top/2023/11/08/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94IRE/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '应急响应IRE',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-11-08 15:55:01'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/four.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr class="custom-hr"/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="My Blog"><span class="site-name">My Blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">应急响应IRE</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2023-11-08T01:46:15.913Z" title="Created 2023-11-08 09:46:15">2023-11-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2023-11-08T07:55:01.951Z" title="Updated 2023-11-08 15:55:01">2023-11-08</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="应急响应IRE"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="应急响应事件监测"><a href="#应急响应事件监测" class="headerlink" title="应急响应事件监测"></a>应急响应事件监测</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">威胁情报运营、安全监控</span><br></pre></td></tr></table></figure>
+
+<h2 id="Windows应急"><a href="#Windows应急" class="headerlink" title="Windows应急"></a>Windows应急</h2><h3 id="进程分析"><a href="#进程分析" class="headerlink" title="进程分析"></a>进程分析</h3><p>一、进程查看与关闭</p>
+<p>计算机与外部网络通信是建立在TCP或UDP协议上，并且每一次通信都具有不同端口(0~65535)如果计算机被木马后，肯定会与外部网络通信，那么此时就可以通过查看网络连接状态，找到对应的进程ID，然后关闭进程ID就可以关闭连接状态。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">netstat -ano | find &quot;ESTABLISHED&quot;    查看网络建立连接状态</span><br><span class="line">tasklist /svc | find &quot;PID&quot;           查看具体PID 进程对应程序</span><br><span class="line">taskkill /PID   pid值 /T  					  关闭进程</span><br><span class="line">taskkill /PID   pid值 /T  /F					强制关闭进程</span><br></pre></td></tr></table></figure>
+
+
+
+<p>二、恶意进程发现与关闭</p>
+<p>恶意代码在Windows系统中运行进程，将以进程的方式进行展示，其中恶意进程执行各种恶意行为。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">对于可执行程序，可以直接使用杀毒软件进行查杀，但是并非所有恶意程序都能够查杀；此时，需要手动查杀使用工具psexplore,然后利用virustotal.com 进行分析，对恶意程序相关服务进行关闭</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h3 id="工具排查"><a href="#工具排查" class="headerlink" title="工具排查"></a>工具排查</h3><h3 id="网络排查"><a href="#网络排查" class="headerlink" title="网络排查"></a>网络排查</h3><h3 id="文件排查"><a href="#文件排查" class="headerlink" title="文件排查"></a>文件排查</h3><p>一、开机启动文件</p>
+<p>一般情况下，各种病毒、木马等恶意程序，都会在计算机开机过程中自启动</p>
+<p>查看项：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1.利用操作系统中的启动菜单(AppData为隐藏目录)</span><br><span class="line">C:\Users\Administrator\AppData\Roaming\Microsoft\Windows\Start Menu\Programs \Startup</span><br><span class="line">C:\Users\Administrator\AppData\Roaming\Microsoft\Windows\开始菜单\程序\启动</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2.利用系统配置  win+R msconfig    /启动</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">3.利用注册表regedit</span><br><span class="line">HKEY_CURRENT_USERS/software/Microsoft/Windows/CurrentVersion/Run</span><br></pre></td></tr></table></figure>
+
+
+
+<p>二、文件分析  -temp临时异常文件</p>
+<p>temp(临时文件夹)，位于C: \Documents and Settings \Administrator\local Settings\内.很多临时文件夹放在这里，用来收藏夹，浏览网页的临时文件，编辑文件等。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">使用运行 输入%temp% 可以直接打开temp文件夹</span><br><span class="line"></span><br><span class="line">查看temp文件夹 发现PE文件（exe、dll、sys）,或者是否具有特别大的tmp文件</span><br><span class="line"></span><br><span class="line">将文件上传到  virustotal 进行病毒检测分析</span><br></pre></td></tr></table></figure>
+
+
+
+<p>三、浏览器信息分析</p>
+<p>在被黑客 拿下的服务器，很可能会使用浏览器进行网站访问。因此我们可以查看浏览器记录查看，探索浏览器是否被使用，下载恶意代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">浏览器浏览痕迹查看</span><br><span class="line"></span><br><span class="line">浏览器文件下载记录查看</span><br><span class="line"></span><br><span class="line">浏览器cookie信息查看</span><br><span class="line"></span><br><span class="line">工具下载地址：https://download.nirsoft.net/nirsoft_package_enc_1.23.17.zip</span><br></pre></td></tr></table></figure>
+
+
+
+<p>四、文件时间属性分析</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">在Windows系统下，文件属性时间具有：创建时间、修改时间、访问时间(默认情况下禁用)，在默认情况下计算机是以修改时间作为展示。</span><br><span class="line"></span><br><span class="line">菜刀可修改Windows修改时间。</span><br><span class="line"></span><br><span class="line">修改时间早于创建时间存在很大可疑(右键属性查看 创建时间、修改时间、访问时间)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>五、最近打开文件分析 </p>
+<p>Windows系统中默认记录系统中最近打开使用的文件信息。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1.可以在目录	C:\Documents and setting \Administrator \Recent查看</span><br><span class="line"></span><br><span class="line">2.win+R 打开运行输入%Userfile%\Recent查看，然后利用Windows中筛选条件进行查看，具体时间范围文件</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h3 id="后门排查"><a href="#后门排查" class="headerlink" title="后门排查"></a>后门排查</h3><p>一、计划任务</p>
+<p>在计算机中可以通过设定计划任务，在固定时间执行固定操作。一般情况下，恶意代码也有可能在固定时间设置执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1.使用schtasks.exe命令可以对计划任务进行管理，直接输入schtasks.exe可以查看当前计算机中保存的计划任务。</span><br><span class="line"></span><br><span class="line">2.当然也可以在可视化的  任务计划程序 管理中进行管理</span><br><span class="line">利用杀软，火绒进行查杀</span><br></pre></td></tr></table></figure>
+
+
+
+<p>二、隐藏账号发现与删除</p>
+<p>隐藏账号，是指“黑客”入侵之后为了能够持久保持对计算机的访问，而对计算机系统只能怪建立不轻易被发现的计算机账户</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">最为简单的隐藏账户建立： net user test$ test/add &amp;&amp; net localgroup administrator test$ /add  其中$符号可以导致系统管理员在使用net user时，无法查看到test$用户</span><br><span class="line"></span><br><span class="line">计算机管理 -&gt;用户  可以查看test$删除</span><br><span class="line"></span><br><span class="line">在注册表中 ：</span><br><span class="line">HKEY_LOCAL_MACHINE -&gt; SAM -&gt; SAM(给权限)-&gt;Domains-&gt;Account-&gt;users(默认 新建 administrator DefauktAccount、guest、WDAGUtilityAccount)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h3 id="应急溯源"><a href="#应急溯源" class="headerlink" title="应急溯源"></a>应急溯源</h3><h2 id="日志分析"><a href="#日志分析" class="headerlink" title="日志分析"></a>日志分析</h2><h3 id="web服务器日志分析"><a href="#web服务器日志分析" class="headerlink" title="web服务器日志分析"></a>web服务器日志分析</h3><h3 id="中间件服务器日志分析"><a href="#中间件服务器日志分析" class="headerlink" title="中间件服务器日志分析"></a>中间件服务器日志分析</h3><h3 id="数据库服务器日志分析"><a href="#数据库服务器日志分析" class="headerlink" title="数据库服务器日志分析"></a>数据库服务器日志分析</h3><h3 id="操作系统日志分析"><a href="#操作系统日志分析" class="headerlink" title="操作系统日志分析"></a>操作系统日志分析</h3><h3 id="安全产品日志分析"><a href="#安全产品日志分析" class="headerlink" title="安全产品日志分析"></a>安全产品日志分析</h3><h1 id="应急响应"><a href="#应急响应" class="headerlink" title="应急响应"></a>应急响应</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">响应分析和处置流程、应急响应事件分类</span><br></pre></td></tr></table></figure>
+
+<h2 id="Linux应急"><a href="#Linux应急" class="headerlink" title="Linux应急"></a>Linux应急</h2><h3 id="进程分析-1"><a href="#进程分析-1" class="headerlink" title="进程分析"></a>进程分析</h3><h3 id="工具排查-1"><a href="#工具排查-1" class="headerlink" title="工具排查"></a>工具排查</h3><h3 id="网络排查-1"><a href="#网络排查-1" class="headerlink" title="网络排查"></a>网络排查</h3><h3 id="文件排查-1"><a href="#文件排查-1" class="headerlink" title="文件排查"></a>文件排查</h3><h3 id="后门排查-1"><a href="#后门排查-1" class="headerlink" title="后门排查"></a>后门排查</h3><h3 id="应急溯源-1"><a href="#应急溯源-1" class="headerlink" title="应急溯源"></a>应急溯源</h3></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://yclyyds.top">Yang</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://yclyyds.top/2023/11/08/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94IRE/">http://yclyyds.top/2023/11/08/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94IRE/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/four.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/11/06/Linux%E6%9F%A5%E6%97%A5%E5%BF%97/" title="Linux查日志"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Next</div><div class="next_info">Linux查日志</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/four.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Yang</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E6%B5%8B"><span class="toc-number">1.</span> <span class="toc-text">应急响应事件监测</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Windows%E5%BA%94%E6%80%A5"><span class="toc-number">1.1.</span> <span class="toc-text">Windows应急</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E5%88%86%E6%9E%90"><span class="toc-number">1.1.1.</span> <span class="toc-text">进程分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E6%8E%92%E6%9F%A5"><span class="toc-number">1.1.2.</span> <span class="toc-text">工具排查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E6%8E%92%E6%9F%A5"><span class="toc-number">1.1.3.</span> <span class="toc-text">网络排查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%8E%92%E6%9F%A5"><span class="toc-number">1.1.4.</span> <span class="toc-text">文件排查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8E%E9%97%A8%E6%8E%92%E6%9F%A5"><span class="toc-number">1.1.5.</span> <span class="toc-text">后门排查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E6%80%A5%E6%BA%AF%E6%BA%90"><span class="toc-number">1.1.6.</span> <span class="toc-text">应急溯源</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90"><span class="toc-number">1.2.</span> <span class="toc-text">日志分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#web%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90"><span class="toc-number">1.2.1.</span> <span class="toc-text">web服务器日志分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E9%97%B4%E4%BB%B6%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90"><span class="toc-number">1.2.2.</span> <span class="toc-text">中间件服务器日志分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90"><span class="toc-number">1.2.3.</span> <span class="toc-text">数据库服务器日志分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90"><span class="toc-number">1.2.4.</span> <span class="toc-text">操作系统日志分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E4%BA%A7%E5%93%81%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90"><span class="toc-number">1.2.5.</span> <span class="toc-text">安全产品日志分析</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94"><span class="toc-number">2.</span> <span class="toc-text">应急响应</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E5%BA%94%E6%80%A5"><span class="toc-number">2.1.</span> <span class="toc-text">Linux应急</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E5%88%86%E6%9E%90-1"><span class="toc-number">2.1.1.</span> <span class="toc-text">进程分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E6%8E%92%E6%9F%A5-1"><span class="toc-number">2.1.2.</span> <span class="toc-text">工具排查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E6%8E%92%E6%9F%A5-1"><span class="toc-number">2.1.3.</span> <span class="toc-text">网络排查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%8E%92%E6%9F%A5-1"><span class="toc-number">2.1.4.</span> <span class="toc-text">文件排查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8E%E9%97%A8%E6%8E%92%E6%9F%A5-1"><span class="toc-number">2.1.5.</span> <span class="toc-text">后门排查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E6%80%A5%E6%BA%AF%E6%BA%90-1"><span class="toc-number">2.1.6.</span> <span class="toc-text">应急溯源</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/08/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94IRE/" title="应急响应IRE">应急响应IRE</a><time datetime="2023-11-08T01:46:15.913Z" title="Created 2023-11-08 09:46:15">2023-11-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/06/Linux%E6%9F%A5%E6%97%A5%E5%BF%97/" title="Linux查日志">Linux查日志</a><time datetime="2023-11-06T08:40:11.739Z" title="Created 2023-11-06 16:40:11">2023-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/06/%E7%9B%AE%E5%BD%95%E8%B7%AF%E5%BE%84%E6%89%8B%E6%B5%8B/" title="目录手测">目录手测</a><time datetime="2023-11-06T05:24:12.589Z" title="Created 2023-11-06 13:24:12">2023-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/27/xss/" title="XSS常见标签语句">XSS常见标签语句</a><time datetime="2023-10-27T06:55:37.786Z" title="Created 2023-10-27 14:55:37">2023-10-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/27/%E5%B7%A5%E6%8E%A7%E5%AE%9A%E7%BA%A7/" title="工控定级">工控定级</a><time datetime="2023-10-27T02:07:45.000Z" title="Created 2023-10-27 10:07:45">2023-10-27</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By Yang</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
